@@ -10,39 +10,59 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  String result = "";
+  double number1 = 0.0;
+  double number2 = 0.0;
+
   @override
   Widget build(BuildContext context) {
-    TextField num1 = const TextField(
+    TextField num1 = TextField(
         keyboardType: TextInputType.number,
-        style: TextStyle(
+        style: const TextStyle(
           fontSize: 20.0,
           color: Colors.blueGrey,
         ),
-        decoration: InputDecoration(
+        decoration: const InputDecoration(
           border: OutlineInputBorder(),
           labelText: 'Número 1',
-        ));
-
-    TextField num2 = const TextField(
-        keyboardType: TextInputType.number,
-        style: TextStyle(
-          fontSize: 20.0,
-          color: Colors.blueGrey,
         ),
-        decoration: InputDecoration(
-          border: OutlineInputBorder(),
-          labelText: 'Número 2',
-        ));
+        onChanged: (value) {
+          number1 = double.parse(value);
+        });
+
+    TextField num2 = TextField(
+      keyboardType: TextInputType.number,
+      style: const TextStyle(
+        fontSize: 20.0,
+        color: Colors.blueGrey,
+      ),
+      decoration: const InputDecoration(
+        border: OutlineInputBorder(),
+        labelText: 'Número 2',
+      ),
+      onChanged: (value) => number2 = double.parse(value),
+    );
 
     ElevatedButton button = ElevatedButton(
       style: ButtonStyle(
         foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
       ),
-      onPressed: () {},
+      onPressed: () {
+        setState(() {
+          double calc = number1 + number2;
+          this.result = "Resultado: $calc";
+        });
+      },
       child: const Text('Soma'),
     );
 
-    Padding separator = Padding(padding: const EdgeInsets.all(8.0));
+    Text result = Text(this.result,
+        style: const TextStyle(
+          fontSize: 15.0,
+          color: Colors.blueGrey,
+        ));
+
+    Padding separator = const Padding(padding: EdgeInsets.all(8.0));
 
     Column columns = Column(
       children: [
@@ -53,7 +73,9 @@ class _MyAppState extends State<MyApp> {
         SizedBox(
           width: double.infinity,
           child: button,
-        )
+        ),
+        separator,
+        result,
       ],
     );
     return MaterialApp(
